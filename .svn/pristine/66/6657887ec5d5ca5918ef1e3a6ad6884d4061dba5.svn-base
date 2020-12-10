@@ -1,0 +1,458 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Xml;
+
+public partial class Controls_Mobrol : System.Web.UI.UserControl
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        
+    }
+
+    #region Public Helper Functions
+
+    #region Translators
+
+    public string Get(string referer, string langaugeCode)
+    {
+        string thisText = referer;
+
+        XmlNode nodTerm = GetTermByRef(referer);
+
+        if (nodTerm != null)
+        {
+            thisText = nodTerm.Attributes["text"].Value; ;
+
+            if (langaugeCode.Length > 0)
+            {
+                XmlNode nodTranslation = nodTerm.SelectSingleNode("Translation[@languageCode='" + langaugeCode + "']");
+                if (nodTranslation != null && nodTranslation.Attributes["text"].Value.Length > 0)
+                    thisText = nodTranslation.Attributes["text"].Value;
+            }
+        }
+
+        return thisText;
+    }
+
+    public void Texter(object target, string referer)
+    {
+        Texter(target, referer, "", false, false, false);
+    }
+
+    public void Texter(object target, string referer, string langaugeCode)
+    {
+        Texter(target, referer, langaugeCode, false, false, false);
+    }
+
+    public void Texter(object target, string referer, string langaugeCode, bool showHint)
+    {
+        Texter(target, referer, langaugeCode, showHint, false, false);
+    }
+
+    public void Texter(object target, string referer, string langaugeCode, bool showHint, bool forceCreate)
+    {
+        Texter(target, referer, langaugeCode, showHint, forceCreate, false);
+    }
+
+    public void Texter(object target, string referer, string langaugeCode, bool showHint, bool forceCreate, bool toPlaceholder)
+    {
+        XmlNode nodTerm = GetTermByRef(referer);
+
+        if (nodTerm == null && forceCreate)
+            SaveTerm("", referer, referer);
+
+        nodTerm = GetTermByRef(referer);
+
+        if (nodTerm != null)
+        {
+            // Label, Button, LinkButton, TextBox, CheckBox
+
+            #region Default
+
+            if (target is Label)
+                ((Label)target).Text = nodTerm.Attributes["text"].Value;
+
+            if (target is Button)
+                ((Button)target).Text = nodTerm.Attributes["text"].Value;
+
+            if (target is LinkButton)
+                ((LinkButton)target).Text = nodTerm.Attributes["text"].Value;
+
+            if (target is TextBox)
+                if (!toPlaceholder)
+                    ((TextBox)target).Text = nodTerm.Attributes["text"].Value;
+                else
+                    ((TextBox)target).Attributes.Add("placeholder", nodTerm.Attributes["text"].Value);
+
+            if (target is CheckBox)
+                ((CheckBox)target).Text = nodTerm.Attributes["text"].Value;
+
+            #endregion
+
+            if (langaugeCode.Length > 0)
+            {
+                #region Get Translation
+
+                XmlNode nodTranslation = nodTerm.SelectSingleNode("Translation[@languageCode='" + langaugeCode + "']");
+                if (nodTranslation != null && nodTranslation.Attributes["text"].Value.Length > 0)
+                {
+                    #region Translation
+
+                    if (target is Label)
+                        ((Label)target).Text = nodTranslation.Attributes["text"].Value;
+
+                    if (target is Button)
+                        ((Button)target).Text = nodTranslation.Attributes["text"].Value;
+
+                    if (target is LinkButton)
+                        ((LinkButton)target).Text = nodTranslation.Attributes["text"].Value;
+
+                    if (target is TextBox)
+                        if (!toPlaceholder)
+                            ((TextBox)target).Text = nodTranslation.Attributes["text"].Value;
+                        else
+                            ((TextBox)target).Attributes.Add("placeholder", nodTranslation.Attributes["text"].Value);
+
+                    if (target is CheckBox)
+                        ((CheckBox)target).Text = nodTranslation.Attributes["text"].Value;
+
+                    #endregion
+                }
+                else
+                {
+                    #region Translation Not Found
+
+                    if (showHint)
+                    {
+                        if (target is Label)
+                            ((Label)target).ToolTip = "Translation not found";
+
+                        if (target is Button)
+                            ((Button)target).ToolTip = "Translation not found";
+
+                        if (target is LinkButton)
+                            ((LinkButton)target).ToolTip = "Translation not found";
+
+                        if (target is TextBox)
+                            ((TextBox)target).ToolTip = "Translation not found";
+
+                        if (target is CheckBox)
+                            ((CheckBox)target).ToolTip = "Translation not found";
+                    }
+
+                    return;
+
+                    #endregion
+                }
+
+                #endregion
+            }
+
+            if (showHint)
+            {
+                #region Show Referer
+
+                if (target is Label)
+                    ((Label)target).ToolTip = referer;
+
+                if (target is Button)
+                    ((Button)target).ToolTip = referer;
+
+                if (target is LinkButton)
+                    ((LinkButton)target).ToolTip = referer;
+
+                if (target is TextBox)
+                    ((TextBox)target).ToolTip = referer;
+
+                if (target is CheckBox)
+                    ((CheckBox)target).ToolTip = referer;
+
+                #endregion
+            }
+        }
+        else
+        {
+            #region Show Requested Referer
+
+            if (target is Label)
+                ((Label)target).Text = referer;
+
+            if (target is Button)
+                ((Button)target).Text = referer;
+
+            if (target is LinkButton)
+                ((LinkButton)target).Text = referer;
+
+            if (target is TextBox)
+                ((TextBox)target).Text = referer;
+
+            if (target is CheckBox)
+                ((CheckBox)target).Text = referer;
+
+            #endregion
+
+            #region ToolTip
+
+            if (showHint)
+            {
+                if (target is Label)
+                    ((Label)target).ToolTip = "Term not found";
+
+                if (target is Button)
+                    ((Button)target).ToolTip = "Term not found";
+
+                if (target is LinkButton)
+                    ((LinkButton)target).ToolTip = "Term not found";
+
+                if (target is TextBox)
+                    ((TextBox)target).ToolTip = "Term not found";
+
+                if (target is CheckBox)
+                    ((CheckBox)target).ToolTip = "Term not found";
+            }
+
+            #endregion
+        }
+    }
+
+    #endregion
+
+    #region Readers
+
+    public void GetLanguages(Repeater target)
+    {
+        LoadXML();
+        IEnumerable<XmlNode> lstLanguages = Sumba.SelectNodes("Terming/Languages/Language").Cast<XmlNode>().OrderBy(r => r.Attributes["code"].Value);
+        target.DataSource = lstLanguages;
+        target.DataBind();
+    }
+
+    public void GetTerms(Repeater target)
+    {
+        LoadXML();
+        IEnumerable<XmlNode> lstTerms = Sumba.SelectNodes("Terming/Terms/Term").Cast<XmlNode>().OrderBy(r => r.Attributes["referer"].Value);
+        target.DataSource = lstTerms;
+        target.DataBind();
+    }
+
+    public XmlNode GetTerm(string termID)
+    {
+        LoadXML();
+        XmlNode nodTerm = Sumba.DocumentElement.SelectSingleNode("Terms/Term[@id='" + termID + "']");
+        return nodTerm;
+    }
+
+    public XmlNode GetTermByRef(string referer)
+    {
+        LoadXML();
+        XmlNode nodTerm = Sumba.DocumentElement.SelectSingleNode("Terms/Term[@referer='" + referer + "']");
+        return nodTerm;
+    }
+
+    public XmlNode GetTranslation(string termID, string languageCode)
+    {
+        LoadXML();
+        XmlNode nodTranslation = Sumba.DocumentElement.SelectSingleNode("Terms/Term[@id='" + termID + "']/Translation[@languageCode='" + languageCode + "']");
+        if (nodTranslation == null)
+        {
+            SaveTranslation(termID, languageCode, "");
+            LoadXML();
+        }
+        nodTranslation = Sumba.DocumentElement.SelectSingleNode("Terms/Term[@id='" + termID + "']/Translation[@languageCode='" + languageCode + "']");
+        return nodTranslation;
+    }
+
+    #endregion
+
+    #region Maintenance
+
+    public void SaveLanguage(string languageID, string code, string description)
+    {
+        LoadXML();
+        XmlNode nodLanguages = Sumba.DocumentElement.SelectSingleNode("Languages");
+        XmlNode nodLanguage = nodLanguages.SelectSingleNode("Language[@id='" + languageID + "']");
+
+        if (nodLanguage == null)
+        {
+            XmlNode nodNewLanguage = Sumba.CreateElement("Language");
+            string newID = Guid.NewGuid().ToString().ToLower();
+
+            XmlAttribute attID = Sumba.CreateAttribute("id");
+            attID.Value = newID;
+            nodNewLanguage.Attributes.Append(attID);
+
+            XmlAttribute attCode = Sumba.CreateAttribute("code");
+            attCode.Value = code.ToUpper();
+            nodNewLanguage.Attributes.Append(attCode);
+
+            XmlAttribute attDescription = Sumba.CreateAttribute("description");
+            attDescription.Value = description;
+            nodNewLanguage.Attributes.Append(attDescription);
+
+            nodLanguages.AppendChild(nodNewLanguage);
+        }
+        else
+        {
+            nodLanguage.Attributes["description"].Value = description;
+        }
+        SaveXML(Sumba);
+    }
+
+    public void RemoveLanguage(string languageID)
+    {
+        LoadXML();
+        XmlNode nodLanguages = Sumba.DocumentElement.SelectSingleNode("Languages");
+        XmlNode nodLanguage = nodLanguages.SelectSingleNode("Language[@id='" + languageID + "']");
+
+        string code = nodLanguage.Attributes["code"].Value;
+
+        nodLanguages.RemoveChild(nodLanguage);
+
+        XmlNodeList lstTerms = Sumba.DocumentElement.SelectNodes("Terms/Term");
+        foreach (XmlNode nodTerm in lstTerms)
+        {
+            XmlNode nodTranslation = nodTerm.SelectSingleNode("Translation[@languageCode='" + code + "']");
+            if (nodTranslation != null)
+                nodTerm.RemoveChild(nodTranslation);
+        }
+        SaveXML(Sumba);
+    }
+
+    public string SaveTerm(string termID, string referer, string text)
+    {
+        XmlNode nodTerm = GetTerm(termID);
+        XmlNode nodTerms = Sumba.DocumentElement.SelectSingleNode("Terms");
+
+        if (nodTerm == null)
+        {
+            XmlNode nodNewTerm = Sumba.CreateElement("Term");
+            string newID = Guid.NewGuid().ToString().ToLower();
+            XmlAttribute attTermID = Sumba.CreateAttribute("id");
+            attTermID.Value = newID;
+            nodNewTerm.Attributes.Append(attTermID);
+
+            XmlAttribute attReferer = Sumba.CreateAttribute("referer");
+            attReferer.Value = referer;
+            nodNewTerm.Attributes.Append(attReferer);
+
+            XmlAttribute attText = Sumba.CreateAttribute("text");
+            attText.Value = text;
+            nodNewTerm.Attributes.Append(attText);
+
+            nodTerms.AppendChild(nodNewTerm);
+
+            termID = newID;
+        }
+        else
+        {
+            nodTerm.Attributes["referer"].Value = referer;
+            nodTerm.Attributes["text"].Value = text;
+        }
+        SaveXML(Sumba);
+
+        return termID;
+    }
+
+    public void DeleteTerm(string termID)
+    {
+        XmlNode nodTerm = GetTerm(termID);
+        XmlNode nodTerms = Sumba.DocumentElement.SelectSingleNode("Terms");
+        nodTerms.RemoveChild(nodTerm);
+        SaveXML(Sumba);
+    }
+
+    public void SaveTranslation(string termID, string languageCode, string text)
+    {
+        XmlNode nodTerm = GetTerm(termID);
+        XmlNode nodTranslation = nodTerm.SelectSingleNode("Translation[@languageCode='" + languageCode + "']");
+
+        if (nodTranslation == null)
+        {
+            XmlNode nodNewTranslation = Sumba.CreateElement("Translation");
+
+            XmlAttribute attLanguageCode = Sumba.CreateAttribute("languageCode");
+            attLanguageCode.Value = languageCode;
+            nodNewTranslation.Attributes.Append(attLanguageCode);
+
+            XmlAttribute attText = Sumba.CreateAttribute("text");
+            attText.Value = text;
+            nodNewTranslation.Attributes.Append(attText);
+
+            nodTerm.AppendChild(nodNewTranslation);
+        }
+        else
+        {
+            nodTranslation.Attributes["text"].Value = text;
+        }
+        SaveXML(Sumba);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Private Helper Functions
+
+    protected void SetSumbaDoc()
+    {
+        if (File.Exists(Request.PhysicalApplicationPath + @"XML\Sumba.xsd"))
+            sumbaDoc = Request.PhysicalApplicationPath + @"XML\Sumba.xml";
+
+        if (File.Exists(Request.PhysicalApplicationPath + @"Ikat\XML\Sumba.xsd"))
+            sumbaDoc = Request.PhysicalApplicationPath + @"Ikat\XML\Sumba.xml";
+    }
+
+    private void CreateXML()
+    {
+        SetSumbaDoc();
+
+        XmlDocument docNew = new XmlDocument();
+
+        XmlNode nodTerming = docNew.CreateElement("Terming");
+
+        XmlAttribute attXmlns = docNew.CreateAttribute("xmlns:xsi");
+        attXmlns.Value = "http://www.w3.org/2001/XMLSchema-instance";
+        nodTerming.Attributes.Append(attXmlns);
+
+        XmlAttribute attNoNamespaceSchemaLocation = docNew.CreateAttribute("xsi:noNamespaceSchemaLocation");
+        attNoNamespaceSchemaLocation.Value = "Sumba.xsd";
+        nodTerming.Attributes.Append(attNoNamespaceSchemaLocation);
+
+        XmlNode nodLanguages = docNew.CreateElement("Languages");
+        nodTerming.AppendChild(nodLanguages);
+
+        XmlNode nodTerms = docNew.CreateElement("Terms");
+        nodTerming.AppendChild(nodTerms);
+
+        docNew.AppendChild(nodTerming);
+
+        docNew.Save(sumbaDoc);
+    }
+
+    private void LoadXML()
+    {
+        SetSumbaDoc();
+
+        if (!File.Exists(sumbaDoc))
+            CreateXML();
+
+        Sumba.Load(sumbaDoc);
+    }
+
+    private void SaveXML(XmlDocument docUpdated)
+    {
+        SetSumbaDoc();
+
+        docUpdated.Save(sumbaDoc);
+    }
+
+    #endregion
+
+    private string sumbaDoc = "";
+    private XmlDocument Sumba = new XmlDocument();
+}

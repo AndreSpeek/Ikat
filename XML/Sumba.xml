@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Terming xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Sumba.xsd">
+  <Languages>
+    <Language id="0a6f3c91-9d7a-4198-a276-15213de315fa" code="NL" description="Nederlands" />
+    <Language id="1a6f3c91-9d7a-4198-a276-15213de315fa" code="FR" description="Francais" />
+    <Language id="2a6f3c91-9d7a-4198-a276-15213de315fa" code="DE" description="Deutsch" />
+  </Languages>
+  <Terms>
+    <Term id="9ecfbdaa-e80d-449e-b06a-c370630c9205" referer="bullet01" text="Expert Advice">
+      <Translation languageCode="DE" text="Fachberatung" />
+      <Translation languageCode="FR" text="Conseil d'expert" />
+      <Translation languageCode="NL" text="Vakkundig Advies" />
+    </Term>
+    <Term id="a9044f39-d312-4e0c-a9cc-871b5f907e0b" referer="bullet02" text="Fast Delivery">
+      <Translation languageCode="DE" text="" />
+      <Translation languageCode="FR" text="Livraison rapide" />
+      <Translation languageCode="NL" text="Snelle Levering" />
+    </Term>
+    <Term id="53b25e8f-b11e-4c39-b8da-55b3de7c2406" referer="bullet03" text="Best Prices">
+      <Translation languageCode="DE" text="" />
+      <Translation languageCode="FR" text="Les meilleurs prix" />
+      <Translation languageCode="NL" text="De beste prijzen" />
+    </Term>
+    <Term id="1a769020-1d00-4394-ab6e-1d1f5299e3ee" referer="bullet01Text" text="With 60 years of experience we will help you find the right tyres with the best prices">
+      <Translation languageCode="DE" text="Mit 60 Jahren Erfahrung helfen wir Ihnen, die richtigen Reifen zu den besten Preisen zu finden" />
+      <Translation languageCode="FR" text="Avec plus de 60 ans d'expérience, nous sommes heureux de vous aider à trouver le bon pneu au meilleur prix." />
+      <Translation languageCode="NL" text="Met ruim 60 jaar ervaring helpen wij u graag bij het vinden van de juiste band voor de beste prijs" />
+    </Term>
+    <Term id="69283f4a-9a0a-4031-8180-cedf3efdf058" referer="bullet02Text" text="With a large stock and using our own delivery service we guarantee a fast delivery">
+      <Translation languageCode="DE" text="Mit einem großen Lager und einem eigenen Lieferservice garantieren wir eine schnelle Lieferung" />
+      <Translation languageCode="FR" text="Grâce à un stock important et à notre propre service de livraison, votre commande est garantie livrée rapidement" />
+      <Translation languageCode="NL" text="Dankzij een ruime voorraad en eigen bezorgdienst is uw bestelling gegarandeerd snel in huis" />
+    </Term>
+    <Term id="bebc6e24-093d-4d18-a1ae-6269e1fa29fd" referer="bullet03Text" text="Besides all well-known brands we offer a wide range of high qualite affordable alternatives">
+      <Translation languageCode="DE" text="" />
+      <Translation languageCode="FR" text="En plus de toutes les grandes marques connues, nous proposons une large gamme d’alternatives de qualité et abordables." />
+      <Translation languageCode="NL" text="Naast alle bekende A-Merken hebben wij een ruim aanbod van goede en betaalbare alternatieven" />
+    </Term>
+    <Term id="4d8757dd-073e-4a93-9a90-d462d325e25a" referer="submitNewsLetter" text="Submit">
+      <Translation languageCode="DE" text="" />
+      <Translation languageCode="FR" text="S'inscrire" />
+      <Translation languageCode="NL" text="Aanmelden" />
+    </Term>
+    <Term id="605d87b6-70f0-45a8-a424-674b010f0ed3" referer="newsLetterHeader" text="Do you want to keep informed on stock &amp; prices?">
+      <Translation languageCode="DE" text="Möchten Sie über Aktien und Preise auf dem Laufenden bleiben?" />
+      <Translation languageCode="FR" text="Restez informé de notre offre et de nos prix?" />
+      <Translation languageCode="NL" text="Op de hoogte blijven van ons aanbod en prijzen?" />
+    </Term>
+    <Term id="6863dde8-0bb9-47f8-8081-353d1ac83ca4" referer="signupNewsLetter" text="Sign up for our news letter">
+      <Translation languageCode="DE" text="Melden Sie sich für unseren Newsletter an" />
+      <Translation languageCode="FR" text="Inscrivez-vous à notre newsletter" />
+      <Translation languageCode="NL" text="Meld u aan voor onze nieuwsbrief" />
+    </Term>
+    <Term id="5d1926d4-4648-40ae-9940-5454b3c22cd1" referer="goToWebshop" text="Open the Webshop">
+      <Translation languageCode="DE" text="" />
+      <Translation languageCode="FR" text="Boutique en ligne" />
+      <Translation languageCode="NL" text="Ga naar de Webshop" />
+    </Term>
+    <Term id="33ccd8e3-c03f-4ae5-b83f-740ed34fbc9e" referer="webshopIntro" text="As a Customer of TruxxTyres you can always check our current stock and prices. And you can easily order online. Furthermore you can check your order history and invoices.">
+      <Translation languageCode="DE" text="Als Kunde von TruxxTyres können Sie jederzeit unseren aktuellen Lagerbestand und Preise einsehen. Und Sie können einfach online bestellen. Außerdem können Sie Ihre Bestellhistorie und Rechnungen einsehen." />
+      <Translation languageCode="FR" text="En tant que client TruxxTyres, vous avez toujours accès à nos stocks et prix actuels et vous pouvez facilement commander en ligne. Vous pouvez également consulter l'historique de vos commandes et vos factures." />
+      <Translation languageCode="NL" text="Als klant van TruxxTyres heeft u altijd inzage in onze actuele voorraad en prijzen en u kunt eenvoudig online bestelen. Daarnaast heeft u inzage in uw bestelhistorie en facturen." />
+    </Term>
+  </Terms>
+</Terming>
